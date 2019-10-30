@@ -68,13 +68,12 @@ namespace OSharp.Core.Identity
         private void ValidateNickName(TUser user, List<string> errors)
         {
             string nickName = user.NickName;
-            if (user.NickName.IsMissing())
+            if (user.NickName.IsMissing() || !RequireUniqueNickName)
             {
-                errors.Add("用户昵称不能为空");
                 return;
             }
             TUser existUser = _manager.Users.FirstOrDefault(m => m.NickName == nickName);
-            if (existUser == null || user.Id.Equals(existUser.Id) || !RequireUniqueNickName)
+            if (existUser == null || user.Id.Equals(existUser.Id))
             {
                 return;
             }
